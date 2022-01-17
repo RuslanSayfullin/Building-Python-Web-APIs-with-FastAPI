@@ -17,7 +17,7 @@ CRM — Customer Relationship Management(управление отношения
 https://github.com/RuslanSayfullin/FastCRM.git
 П
 ерейти в папку:
-$ cd crm_web
+$ cd FastCRM
 
 Создать и активировать виртуальное окружение Python.
 
