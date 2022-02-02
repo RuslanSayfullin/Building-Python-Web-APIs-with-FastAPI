@@ -19,8 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',  # Набор фильтров шаблонов Django, полезный для придания данным «человеческого оттенка».
-    #'debug_toolbar',  # Набор панелей, появляющихся на странице в режиме отладки
-
+    'debug_toolbar',  # Набор панелей, появляющихся на странице в режиме отладки
     'inquery.apps.InqueryConfig'
 
 ]
@@ -33,7 +32,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',  # Набор панелей, появляющихся на странице в режиме отладки
+    'debug_toolbar.middleware.DebugToolbarMiddleware',  # Набор панелей, появляющихся на странице в режиме отладки
 ]
 
 ROOT_URLCONF = 'portal.urls'
