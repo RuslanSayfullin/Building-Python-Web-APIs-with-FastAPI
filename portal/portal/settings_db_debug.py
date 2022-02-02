@@ -17,7 +17,7 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'crm',
+        'NAME': 'fastcrm',
         'USER': 'portaluser',
         'PASSWORD': '12345',
         'HOST': 'localhost',
