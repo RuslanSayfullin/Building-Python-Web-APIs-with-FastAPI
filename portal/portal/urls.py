@@ -18,6 +18,6 @@ if settings_db_debug.DEBUG:
 
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# handler404 = TemplateView.as_view(template_name="portal/404.html")
-# handler403 = TemplateView.as_view(template_name="portal/403.html")
+handler404 = TemplateView.as_view(template_name="portal/404.html")
+handler403 = TemplateView.as_view(template_name="portal/403.html")
 
