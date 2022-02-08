@@ -20,8 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',  # Набор фильтров шаблонов Django, полезный для придания данным «человеческого оттенка».
     'debug_toolbar',  # Набор панелей, появляющихся на странице в режиме отладки
-    'inquery.apps.InqueryConfig'
-
+    'rest_framework',
+    'inquery.apps.InqueryConfig',
 ]
 
 MIDDLEWARE = [

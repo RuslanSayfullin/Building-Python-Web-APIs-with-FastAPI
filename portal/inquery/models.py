@@ -291,7 +291,7 @@ class Inquery(models.Model):
 
 class InqueryStatus(models.Model):
     """Модель статуса заявки"""
-    froze = models.ForeignKey(Inquery, on_delete=models.CASCADE, verbose_name="Заявка")
+    inquery = models.ForeignKey(Inquery, on_delete=models.CASCADE, verbose_name="Заявка")
     call_back = models.DateField(blank=True, null=True)
     start_datetime = models.DateTimeField(blank=True, null=True, verbose_name="Дата замера")
     comment = models.TextField(blank=True, null=True)
