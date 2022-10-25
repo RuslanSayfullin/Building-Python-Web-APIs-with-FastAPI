@@ -1,4 +1,5 @@
 from fastapi import FastAPI, APIRouter
+from typing import Optional
 
 
 # Несколько примеров рецептов. На данный момент это просто и минимально, но служит нашим целям обучения.
@@ -49,6 +50,22 @@ def fetch_recipe(*, recipe_id: int) -> dict:
     result = [recipe for recipe in RECIPES if recipe["id"] == recipe_id]
     if result:
         return result[0]
+
+
+# Создаём GET конечная точку /search/. Обратите внимание, что у него нет параметров пути
+@api_router.get("/search/", status_code=200)  # определяет логику для новой конечной точки.
+def search_recipes(
+    keyword: Optional[str] = None, max_results: Optional[int] = 10) -> dict:
+    """
+    Search for recipes based on label keyword
+    """
+    if not keyword:
+        # we use Python list slicing to limit results
+        # based on the max_results query parameter
+        return {"results": RECIPES[:max_results]}  # 6
+
+    results = filter(lambda recipe: keyword.lower() in recipe["label"].lower(), RECIPES)  # 7
+    return {"results": list(results)[:max_results]}
 
 
 # 4. Используем метод include_router для регистрации маршрутизатора, созданного на шаге 2, в объекте FastAPI.
