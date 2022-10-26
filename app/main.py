@@ -52,6 +52,23 @@ def search_recipes(
     return {"results": list(results)[:max_results]}
 
 
+# New addition, using Pydantic model `RecipeCreate` to define
+# the POST request body
+@api_router.post("/recipe/", status_code=201, response_model=Recipe)
+def create_recipe(*, recipe_in: RecipeCreate) -> dict:
+     """Create a new recipe (in memory only)"""
+     new_entry_id = len(RECIPES) + 1
+     recipe_entry = Recipe(
+        id=new_entry_id,
+        label=recipe_in.label,
+        source=recipe_in.source,
+        url=recipe_in.url,
+     )
+     RECIPES.append(recipe_entry.dict())
+
+     return recipe_entry
+
+
 # 4. Используем метод include_router для регистрации маршрутизатора, созданного на шаге 2, в объекте FastAPI.
 app.include_router(api_router)
 
