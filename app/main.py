@@ -1,28 +1,9 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Query
 from typing import Optional
 
+from app.schemas import RecipeSearchResults, Recipe, RecipeCreate
+from app.recipe_data import RECIPES
 
-# Несколько примеров рецептов. На данный момент это просто и минимально, но служит нашим целям обучения.
-RECIPES = [
-    {
-        "id": 1,
-        "label": "Chicken Vesuvio",
-        "source": "Serious Eats",
-        "url": "http://www.seriouseats.com/recipes/2011/12/chicken-vesuvio-recipe.html",
-    },
-    {
-        "id": 2,
-        "label": "Chicken Paprikash",
-        "source": "No Recipes",
-        "url": "http://norecipes.com/recipe/chicken-paprikash/",
-    },
-    {
-        "id": 3,
-        "label": "Cauliflower and Tofu Curry Recipe",
-        "source": "Serious Eats",
-        "url": "http://www.seriouseats.com/recipes/2011/02/cauliflower-and-tofu-curry-recipe.html",
-    },
-]
 
 # 1. Создали экземпляр объекта FastAPI, который представляет собой класс Python, предоставляющий все функции для API.
 app = FastAPI(title="Recipe API", openapi_url="/openapi.json")
@@ -41,7 +22,7 @@ def root() -> dict:
 
 
 # Моделируем выборку данных по идентификатору из базы данных. Затем данные сериализуются и возвращаются в формате JSON.
-@api_router.get("/recipe/{recipe_id}", status_code=200)
+@api_router.get("/recipe/{recipe_id}", status_code=200, response_model=Recipe)
 def fetch_recipe(*, recipe_id: int) -> dict:
     """
      Fetch a single recipe by ID
@@ -55,16 +36,19 @@ def fetch_recipe(*, recipe_id: int) -> dict:
 # Создаём GET конечная точку /search/. Обратите внимание, что у него нет параметров пути
 @api_router.get("/search/", status_code=200)  # определяет логику для новой конечной точки.
 def search_recipes(
-    keyword: Optional[str] = None, max_results: Optional[int] = 10) -> dict:
+    *,
+    keyword: Optional[str] = Query(None, min_length=3, example="chicken"),
+    max_results: Optional[int] = 10) \
+    -> dict:
     """
     Search for recipes based on label keyword
     """
     if not keyword:
         # we use Python list slicing to limit results
         # based on the max_results query parameter
-        return {"results": RECIPES[:max_results]}  # 6
+        return {"results": RECIPES[:max_results]}
 
-    results = filter(lambda recipe: keyword.lower() in recipe["label"].lower(), RECIPES)  # 7
+    results = filter(lambda recipe: keyword.lower() in recipe["label"].lower(), RECIPES)
     return {"results": list(results)[:max_results]}
 
 
