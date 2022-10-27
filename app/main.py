@@ -1,5 +1,5 @@
-from fastapi import FastAPI, APIRouter, Query
-from typing import Optional
+from fastapi import FastAPI, APIRouter, Query, HTTPException
+from typing import Optional, Any
 
 from app.schemas import RecipeSearchResults, Recipe, RecipeCreate
 from app.recipe_data import RECIPES
@@ -23,14 +23,18 @@ def root() -> dict:
 
 # Моделируем выборку данных по идентификатору из базы данных. Затем данные сериализуются и возвращаются в формате JSON.
 @api_router.get("/recipe/{recipe_id}", status_code=200, response_model=Recipe)
-def fetch_recipe(*, recipe_id: int) -> dict:
+def fetch_recipe(*, recipe_id: int) -> Any:
     """
      Fetch a single recipe by ID
     """
 
     result = [recipe for recipe in RECIPES if recipe["id"] == recipe_id]
-    if result:
-        return result[0]
+    if not result:
+        # Если рецепт не найден, мы поднимаем HTTPException передачу status_code404
+        raise HTTPException(
+            status_code=404, detail=f"Recipe with ID {recipe_id} not found"
+        )
+    return result[0]
 
 
 # Создаём GET конечная точку /search/. Обратите внимание, что у него нет параметров пути
