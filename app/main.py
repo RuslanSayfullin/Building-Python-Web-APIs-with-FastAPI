@@ -1,8 +1,15 @@
-from fastapi import FastAPI, APIRouter, Query, HTTPException
+from fastapi import FastAPI, APIRouter, Query, HTTPException, Request
+from fastapi.templating import Jinja2Templates
+
 from typing import Optional, Any
+from pathlib import Path
 
 from app.schemas import RecipeSearchResults, Recipe, RecipeCreate
 from app.recipe_data import RECIPES
+
+# указываем каталог шаблонов Jinja
+BASE_PATH = Path(__file__).resolve().parent
+TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "templates"))
 
 
 # 1. Создали экземпляр объекта FastAPI, который представляет собой класс Python, предоставляющий все функции для API.
@@ -14,11 +21,14 @@ api_router = APIRouter()
 
 # 3. Добавив @api_router.get("/", status_code=200) декоратор к функции root, определяем базовую точку GET для API.
 @api_router.get("/", status_code=200)
-def root() -> dict:
+def root(request: Request) -> dict:     # Функция принимает Request класс FastAPI в качестве аргумента.
     """
     Root Get
     """
-    return {"msg": "Hello, World!"}
+    return TEMPLATES.TemplateResponse(
+        "index.html",
+        {"request": request, "recipes": RECIPES},
+    )
 
 
 # Моделируем выборку данных по идентификатору из базы данных. Затем данные сериализуются и возвращаются в формате JSON.
