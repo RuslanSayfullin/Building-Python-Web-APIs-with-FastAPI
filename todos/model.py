@@ -13,6 +13,7 @@ class Todo(BaseModel):
             }
         }
 
+
 class TodoItem(BaseModel):
     item: str
 
