@@ -5,6 +5,7 @@
     >>> print(moscow)  # doctest:+ELLIPSIS
     <coordinates.Coordinate object at 0x...>
 """
+# В примере показан тот же класс Coordinate с двумя атрибутами float и методом __str__, который отображает координаты в формате 55.8°N, 37.6°E.
 
 # tag::COORDINATE[]
 class Coordinate:
