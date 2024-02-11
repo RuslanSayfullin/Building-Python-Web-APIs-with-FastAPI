@@ -11,6 +11,7 @@
 from typing import NamedTuple
 
 class Coordinate(NamedTuple):
+    """отображает координаты в формате 55.8°N, 37.6°E"""
     lat: float
     lon: float
 
